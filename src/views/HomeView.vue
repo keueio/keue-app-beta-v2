@@ -2,6 +2,6 @@
 
 <template>
     <main>
-        <h1 class="title text-lg font-medium text-gray-700">Keue IO</h1>
+        <h1 class="title text-lg font-medium text-gray-700">Your queues</h1>
     </main>
 </template>
