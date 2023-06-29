@@ -27,7 +27,7 @@ const { navigation, teams, sidebarOpen } = useNavigation();
                 leave-to="opacity-0"
             >
                 <div
-                    class="fixed inset-0 bg-white bg-opacity-60 backdrop-blur-sm"
+                    class="fixed inset-0 bg-white bg-opacity-40 backdrop-blur-md"
                 />
             </TransitionChild>
 
@@ -63,7 +63,7 @@ const { navigation, teams, sidebarOpen } = useNavigation();
                                 >
                                     <span class="sr-only">Close sidebar</span>
                                     <XMarkIcon
-                                        class="h-6 w-6 text-white"
+                                        class="h-6 w-6 text-grey-900"
                                         aria-hidden="true"
                                     />
                                 </button>
@@ -76,7 +76,7 @@ const { navigation, teams, sidebarOpen } = useNavigation();
                             <div class="flex h-16 shrink-0 items-center">
                                 <img
                                     class="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/mark.svg?color=primary&shade=600"
+                                    src="/logo.png"
                                     alt="Your Company"
                                 />
                             </div>
