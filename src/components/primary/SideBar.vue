@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import {
-    CalendarIcon,
-    ChartPieIcon,
-    Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
-    HomeIcon,
-    UsersIcon,
-    XMarkIcon
-} from "@heroicons/vue/24/outline";
+import { Cog6ToothIcon } from "@heroicons/vue/24/outline";
 import { useNavigation } from "@/composables/navigationComposable";
 const { navigation, teams } = useNavigation();
 </script>

@@ -10,9 +10,9 @@ import {
     XMarkIcon
 } from "@heroicons/vue/24/outline";
 const navigation = [
-    { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+    { name: "Start", href: "/start", icon: HomeIcon, current: true },
     { name: "Team", href: "#", icon: UsersIcon, current: false },
-    { name: "Queues", href: "#", icon: FolderIcon, current: false },
+    { name: "Queues", href: "/", icon: FolderIcon, current: false },
     { name: "Alerts", href: "#", icon: CalendarIcon, current: false },
     { name: "Usage", href: "#", icon: ChartPieIcon, current: false }
 ];

@@ -22,6 +22,7 @@
       ```
     -->
     <div>
+        <Cookies></Cookies>
         <MobileSideBar></MobileSideBar>
         <SideBar></SideBar>
 
@@ -170,6 +171,7 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 import SideBar from "@/components/primary/SideBar.vue";
 import MobileSideBar from "@/components/primary/MobileSideBar.vue";
+import Cookies from "@/components/primary/Cookies.vue";
 import { useNavigation } from "@/composables/navigationComposable";
 const { navigation, sidebarOpen, userNavigation, teams } = useNavigation();
 </script>
