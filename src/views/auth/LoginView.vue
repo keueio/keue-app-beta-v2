@@ -9,7 +9,7 @@ const { auth, provider } = useFirebase();
 
 const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-        .then((result) => {
+        .then(async (result) => {
             console.log("result from signInWithGoogle: ", result);
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential: OAuthCredential | null =

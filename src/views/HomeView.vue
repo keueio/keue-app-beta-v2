@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useFirebase } from "@/composables/firebaseComposable";
+import { onMounted } from "vue";
+const { appCheck } = useFirebase();
+onMounted(() => {});
+</script>
 
 <template>
     <main>
