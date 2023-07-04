@@ -13,7 +13,11 @@ const checkAuthState = async () => {
                 console.log("user is logged in (router): ", user);
                 currentUser.value = user;
 
-                const appCheckToken = await getToken(appCheck, false);
+                const appCheckToken = await getToken(appCheck, false).catch(
+                    (error) => {
+                        console.log("error getting app check token: ", error);
+                    }
+                );
                 console.log("appCheckToken: ", appCheckToken);
                 resolve();
             } else {
