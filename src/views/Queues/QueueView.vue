@@ -31,6 +31,11 @@ const { result: listKeueTasks } = useQuery(
                 payload
                 status
                 created
+                createdAt
+                publishedAt
+                taskName
+                queueId
+                appId
             }
         }
     `,

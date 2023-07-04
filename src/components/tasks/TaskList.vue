@@ -1,22 +1,22 @@
 <template>
     <ul role="list" class="divide-y divide-gray-100">
         <li
-            v-for="project in tasks"
-            :key="project.id"
+            v-for="task in tasks"
+            :key="task.id"
             class="flex items-center justify-between gap-x-6 py-5"
         >
             <div class="min-w-0">
                 <div class="flex items-start gap-x-3">
                     <p class="text-sm font-semibold leading-6 text-gray-900">
-                        {{ project.id }}
+                        {{ task.taskName || task.id }}
                     </p>
                     <p
                         :class="[
-                            statuses[project.status],
+                            statuses[task.status],
                             'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset'
                         ]"
                     >
-                        {{ project.status }}
+                        {{ task.status }}
                     </p>
                 </div>
                 <div
@@ -24,23 +24,23 @@
                 >
                     <p class="whitespace-nowrap">
                         Due on
-                        <time :datetime="project.dueDateTime">{{
-                            project.dueDate
+                        <time :datetime="task.dueDateTime">{{
+                            task.dueDate
                         }}</time>
                     </p>
                     <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
                         <circle cx="1" cy="1" r="1" />
                     </svg>
-                    <p class="truncate">Created by {{ project.created }}</p>
+                    <p class="truncate">
+                        Created by {{ task.createdAt || task.created }}
+                    </p>
                 </div>
             </div>
             <div class="flex flex-none items-center gap-x-4">
                 <a
-                    :href="project.href"
+                    :href="task.href"
                     class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
-                    >View project<span class="sr-only"
-                        >, {{ project.name }}</span
-                    ></a
+                    >View task<span class="sr-only">, {{ task.name }}</span></a
                 >
                 <Menu as="div" class="relative flex-none">
                     <MenuButton
@@ -71,7 +71,7 @@
                                         'block px-3 py-1 text-sm leading-6 text-gray-900'
                                     ]"
                                     >Edit<span class="sr-only"
-                                        >, {{ project.name }}</span
+                                        >, {{ task.name }}</span
                                     ></a
                                 >
                             </MenuItem>
@@ -83,7 +83,7 @@
                                         'block px-3 py-1 text-sm leading-6 text-gray-900'
                                     ]"
                                     >Move<span class="sr-only"
-                                        >, {{ project.name }}</span
+                                        >, {{ task.name }}</span
                                     ></a
                                 >
                             </MenuItem>
@@ -95,7 +95,7 @@
                                         'block px-3 py-1 text-sm leading-6 text-gray-900'
                                     ]"
                                     >Delete<span class="sr-only"
-                                        >, {{ project.name }}</span
+                                        >, {{ task.name }}</span
                                     ></a
                                 >
                             </MenuItem>
