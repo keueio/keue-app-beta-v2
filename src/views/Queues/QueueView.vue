@@ -9,9 +9,11 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { orderBy } from "lodash";
 import { PlusIcon } from "@heroicons/vue/20/solid";
 const route = useRoute();
-const keueId = computed(() => route.params.id);
+const keueId = computed(() => route.params.id || "default");
 const appId = computed(() => route.params.app);
-const keueFullId = computed(() => `${route.params.app}---${route.params.id}`);
+const keueFullId = computed(
+    () => `${route.params.app}---${route.params.id || "default"}`
+);
 
 const listKeueTasksFilter = reactive({
     input: {

@@ -48,6 +48,13 @@ const router = createRouter({
             component: () => import("../views/StartView.vue")
         },
         {
+            path: "/app/:app",
+            name: "queue-view-default",
+            redirect: (to) => {
+                return { path: `/app/${to.params.app}/default` };
+            }
+        },
+        {
             path: "/app/:app/:id",
             name: "queue-view",
             component: () => import("../views/Queues/QueueView.vue")
