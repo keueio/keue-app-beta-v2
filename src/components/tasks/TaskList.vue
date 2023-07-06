@@ -1,6 +1,26 @@
 <template>
     <ul role="list" class="divide-y divide-gray-100">
         <li
+            v-if="tasks.length === 0"
+            v-for="item in 5"
+            :key="item"
+            class="flex flex-col space-y-3 py-5"
+        >
+            <div class="flex flex-row space-x-4">
+                <div
+                    class="animate-pulse w-36 h-4 rounded-lg bg-gray-200"
+                ></div>
+                <div
+                    class="animate-pulse w-24 h-4 rounded-md bg-gray-200"
+                ></div>
+            </div>
+            <div class="flex flex-row space-x-4">
+                <div
+                    class="animate-pulse w-96 h-4 rounded-lg bg-gray-200"
+                ></div>
+            </div>
+        </li>
+        <li
             v-for="task in tasks"
             :key="task.id"
             class="flex items-center justify-between gap-x-6 py-5"
@@ -103,12 +123,6 @@
                     </transition>
                 </Menu>
             </div>
-        </li>
-        <li
-            v-if="tasks.length === 0"
-            class="flex items-center justify-between gap-x-6 py-5"
-        >
-            <div class="block w-full h-24 bg-grey-200"></div>
         </li>
     </ul>
 </template>

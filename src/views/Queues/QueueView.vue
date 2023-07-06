@@ -12,19 +12,7 @@ const route = useRoute();
 const keueId = computed(() => route.params.id);
 const appId = computed(() => route.params.app);
 const keueFullId = computed(() => `${route.params.app}---${route.params.id}`);
-const { result: getKeueResult, refetch } = useQuery(
-    gql`
-        query getKeue($name: String!) {
-            keue(name: $name) {
-                name
-                state
-            }
-        }
-    `,
-    {
-        name: keueFullId
-    }
-);
+
 const listKeueTasksFilter = reactive({
     input: {
         queueId: keueFullId,
@@ -34,10 +22,11 @@ const listKeueTasksFilter = reactive({
         status: "all"
     }
 });
-watch(listKeueTasksFilter, () => {
-    console.log("listKeueTasksFilter change", listKeueTasksFilter);
-});
-const { result: listKeueTasks, refetch: refetchKeueTasks } = useQuery(
+const {
+    result: listKeueTasks,
+    refetch: refetchKeueTasks,
+    loading: listKeueTasksLoading
+} = useQuery(
     gql`
         query Tasks($input: TasksQueryInput) {
             tasks(input: $input) {
@@ -55,6 +44,26 @@ const { result: listKeueTasks, refetch: refetchKeueTasks } = useQuery(
     `,
     listKeueTasksFilter
 );
+const {
+    result: getKeueResult,
+    refetch,
+    loading: getKeueLoading
+} = useQuery(
+    gql`
+        query getKeue($name: String!) {
+            keue(name: $name) {
+                name
+                state
+            }
+        }
+    `,
+    {
+        name: keueFullId
+    }
+);
+watch(listKeueTasksFilter, () => {
+    console.log("listKeueTasksFilter change", listKeueTasksFilter);
+});
 const filteredTasks = computed(() => {
     const tasks = listKeueTasks.value?.tasks || [];
     return orderBy(tasks, "createdAt", "desc");
@@ -69,7 +78,7 @@ const refetchTasks = () => {
         <QueueViewHeader></QueueViewHeader>
         <TaskListTabs class="mt-12 mb-6"></TaskListTabs>
         <div
-            class="rounded-md px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
+            class="rounded-md w-16 px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
         >
             <label for="name" class="block text-xs font-medium text-gray-900"
                 >Limit</label
@@ -83,6 +92,12 @@ const refetchTasks = () => {
                 placeholder="20"
             />
         </div>
+        <span class="text-xs text-gray-500"
+            >listKeueTasksLoading: {{ listKeueTasksLoading }}</span
+        ><br />
+        <span class="text-xs text-gray-500"
+            >getKeueLoading: {{ getKeueLoading }}</span
+        >
         <TaskList :tasks="filteredTasks" />
     </div>
 </template>
