@@ -28,3 +28,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+public/service-worker.bundle.js
+public/service-worker.bundle.js.LICENCE.txt
