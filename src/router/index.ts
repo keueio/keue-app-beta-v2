@@ -64,7 +64,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
     console.log("before each");
-    await checkAuthState();
+    // await checkAuthState();
     return true;
 });
 

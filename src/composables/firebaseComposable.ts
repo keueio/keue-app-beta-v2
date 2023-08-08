@@ -20,12 +20,12 @@ const firebaseConfig = {
 
 const provider = new GoogleAuthProvider();
 provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 auth.tenantId = tenantId;
 const db = getFirestore(app);
 console.log("firebaseConfig", firebaseConfig);
-const appCheck = initializeAppCheck(app, {
+export const appCheck = initializeAppCheck(app, {
     provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_KEY),
     isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
 });

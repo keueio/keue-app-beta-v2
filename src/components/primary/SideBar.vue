@@ -13,7 +13,7 @@ const { navigation, teams } = useNavigation();
         <div
             class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4"
         >
-            <div class="flex h-18 shrink-0 items-center">
+            <div class="flex h-18 shrink-0 items-center pt-6 pb-4">
                 <img class="h-14 w-auto" src="/logo.png" alt="Keue IO" />
             </div>
             <nav class="flex flex-1 flex-col">

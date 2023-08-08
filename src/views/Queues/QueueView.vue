@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useMutation, useQuery } from "@vue/apollo-composable";
+import { apolloClient } from "@/apollo";
 import TaskList from "@/components/tasks/TaskList.vue";
 import TaskListTabs from "@/components/tasks/TaskListTabs.vue";
 import QueueViewHeader from "@/components/queues/QueueViewHeader.vue";
@@ -14,7 +15,6 @@ const appId = computed(() => route.params.app);
 const keueFullId = computed(
     () => `${route.params.app}---${route.params.id || "default"}`
 );
-
 const listKeueTasksFilter = reactive({
     input: {
         queueId: keueFullId,
