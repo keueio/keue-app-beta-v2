@@ -175,11 +175,11 @@ import Cookies from "@/components/primary/Cookies.vue";
 import { useNavigation } from "@/composables/navigationComposable";
 const { navigation, sidebarOpen, userNavigation, teams } = useNavigation();
 onMounted(() => {
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register(
-            "/service-worker.bundle.js?t=" + new Date().valueOf(),
-            { scope: "/", type: "module" }
-        );
-    }
+    // if ("serviceWorker" in navigator) {
+    //     navigator.serviceWorker.register(
+    //         "/service-worker.bundle.js?t=" + new Date().valueOf(),
+    //         { scope: "/", type: "module" }
+    //     );
+    // }
 });
 </script>

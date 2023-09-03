@@ -86,9 +86,9 @@ self.addEventListener('fetch', function (event) {
             headers.append(entry[0], entry[1]);
         }
         const idToken = await getIdTokenPromise();
-        // const appCheckToken = await getAppCheckToken();
+        const appCheckToken = await getAppCheckToken();
         // // Add new header
-        // headers.append('X-App-Check-Token', appCheckToken ?? 'CustomValue');
+        headers.append('X-App-Check-Token', appCheckToken ?? 'CustomValue');
         headers.append('Authorization', idToken);
 
         console.log("headers: ", headers.get("Authorization"));
@@ -106,30 +106,34 @@ self.addEventListener('fetch', function (event) {
     })());
 });
 
-// function idbOpen() {
-//     return new Promise((resolve, reject) => {
-//         const request = indexedDB.open('firebase-app-check-database', 1);
-//         request.onerror = (event) => {
-//             reject(`Error opening IndexedDB: ${event.target.errorCode}`);
-//         };
-//         request.onsuccess = (event) => {
-//             resolve(event.target.result);
-//         };
-//     });
-// }
+function idbOpen() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('firebase-app-check-database', 1);
+        request.onerror = (event) => {
+            console.log("open db error: ", event.target.errorCode);
+            reject(`Error opening IndexedDB: ${event.target.errorCode}`);
+        };
+        request.onsuccess = (event) => {
+            console.log("open db result: ", event.target.result);
+            resolve(event.target.result);
+        };
+    });
+}
 
-// function idbGet(db, key) {
-//     return new Promise((resolve, reject) => {
-//         const transaction = db.transaction('firebase-app-check-store', 'readonly');
-//         const store = transaction.objectStore('"1:219374522857:web:1957bd9c8479074b0cbb78-[DEFAULT]"');
-//         const request = store.get(key);
-//         request.onsuccess = (event) => {
-//             resolve(event.target.result);
-//         };
-//         request.onerror = (event) => {
-//             reject(`Error getting from IndexedDB: ${event.target.errorCode}`);
-//         };
-//     });
-// }
+function idbGet(db, key) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction('firebase-app-check-store', 'readonly');
+        const store = transaction.objectStore('"1:219374522857:web:1957bd9c8479074b0cbb78-[DEFAULT]"');
+        const request = store.get(key);
+        request.onsuccess = (event) => {
+            console.log("get db result: ", event.target.result);
+            resolve(event.target.result);
+        };
+        request.onerror = (event) => {
+            console.log("get db error: ", event.target.errorCode);
+            reject(`Error getting from IndexedDB: ${event.target.errorCode}`);
+        };
+    });
+}
 
 // [END auth_svc_intercept_modular]
