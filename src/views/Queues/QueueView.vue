@@ -32,15 +32,15 @@ const {
     gql`
         query Tasks($input: TasksQueryInput) {
             tasks(input: $input) {
-                id
-                payload
-                status
-                created
-                createdAt
-                publishedAt
                 taskName
+                created
+                publishedAt
+                status
                 queueId
+                taskMessageId
+                id
                 appId
+                topicId
             }
         }
     `,
