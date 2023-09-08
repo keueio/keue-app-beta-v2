@@ -17,15 +17,23 @@
             <div
                 class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500"
             >
-                <p class="whitespace-nowrap">
+                <!-- <p class="whitespace-nowrap">
                     Due on
                     <time :datetime="task.dueDateTime">{{ task.dueDate }}</time>
                 </p>
                 <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
                     <circle cx="1" cy="1" r="1" />
+                </svg> -->
+                <p class="truncate">
+                    Published at
+                    {{ task.createdAt || task.created }}
+                </p>
+
+                <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
+                    <circle cx="1" cy="1" r="1" />
                 </svg>
                 <p class="truncate">
-                    Created by {{ task.createdAt || task.created }}
+                    {{ timestampToHuman(task.createdAt || task.created) }}
                 </p>
             </div>
         </div>
@@ -99,12 +107,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import moment from "moment";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
 import { useTasksComposable } from "@/composables/tasksComposable";
 import { useNavigation } from "@/composables/navigationComposable";
 const { asideOpen } = useNavigation();
-const { selectedTask } = useTasksComposable();
+const { selectedTask, timestampToHuman } = useTasksComposable();
 
 const props = defineProps({
     task: {
@@ -121,8 +130,8 @@ const openTask = () => {
 };
 
 const statuses: any = {
-    Complete: "text-green-700 bg-green-50 ring-green-600/20",
-    "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-    Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20"
+    "task-delivered": "text-green-700 bg-green-50 ring-green-600/20",
+    "task-enqueued": "text-gray-600 bg-gray-50 ring-gray-500/10",
+    "task-failed": "text-red-800 bg-red-50 ring-red-600/20"
 };
 </script>
