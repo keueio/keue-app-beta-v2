@@ -7,7 +7,7 @@ const { navigation, teams } = useNavigation();
 <template>
     <!-- Static sidebar for desktop -->
     <div
-        class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col"
+        class="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col"
     >
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div

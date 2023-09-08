@@ -2,13 +2,16 @@
 import { useRoute } from "vue-router";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { apolloClient } from "@/apollo";
+import { useTasksComposable } from "@/composables/tasksComposable";
 import TaskList from "@/components/tasks/TaskList.vue";
 import TaskListTabs from "@/components/tasks/TaskListTabs.vue";
+import TaskAside from "@/components/tasks/TaskAside.vue";
 import QueueViewHeader from "@/components/queues/QueueViewHeader.vue";
 import gql from "graphql-tag";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { orderBy } from "lodash";
 import { PlusIcon } from "@heroicons/vue/20/solid";
+const { selectedTask } = useTasksComposable();
 const route = useRoute();
 const keueId = computed(() => route.params.id || "default");
 const appId = computed(() => route.params.app);
@@ -41,6 +44,7 @@ const {
                 id
                 appId
                 topicId
+                payload
             }
         }
     `,
@@ -101,5 +105,8 @@ const refetchTasks = () => {
             >getKeueLoading: {{ getKeueLoading }}</span
         >
         <TaskList :tasks="filteredTasks" />
+        <Teleport to="aside">
+            <TaskAside :selected-task="selectedTask"></TaskAside>
+        </Teleport>
     </div>
 </template>

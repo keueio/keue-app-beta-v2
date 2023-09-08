@@ -26,14 +26,16 @@
         <MobileSideBar></MobileSideBar>
         <SideBar></SideBar>
 
-        <div class="lg:pl-72">
-            <div class="sticky top-0 z-40 lg:mx-auto lg:max-w-7xl lg:px-8">
+        <div class="">
+            <div
+                class="xl:pl-72 sticky top-0 z-40 xl:mx-auto xl:max-w-7xl xl:px-8"
+            >
                 <div
                     class="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none"
                 >
                     <button
                         type="button"
-                        class="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+                        class="-m-2.5 p-2.5 text-gray-700 xl:hidden"
                         @click="sidebarOpen = true"
                     >
                         <span class="sr-only">Open sidebar</span>
@@ -139,12 +141,33 @@
                     </div>
                 </div>
             </div>
-
-            <main class="py-10">
+            <main class="xl:pl-72">
+                <div
+                    class="pb-[24rem] md:pb-0"
+                    :class="[
+                        asideOpen
+                            ? `md:pr-[18rem] lg:pr-[28rem] xl:pr-[34rem]`
+                            : 'pr-0'
+                    ]"
+                >
+                    <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
+                        <RouterView></RouterView>
+                    </div>
+                </div>
+            </main>
+            <Transition v-show="asideOpen">
+                <aside
+                    id="aside"
+                    class="fixed sm:max-sm:inset-x-0 bottom-0 md:right-0 w-full h-[24rem] md:h-full md:w-[18rem] lg:w-[28rem] xl:w-[34rem] overflow-y-auto border-t md:border-t-0 md:border-l border-gray-200 pt-8 md:pt-24 px-4 sm:px-6 lg:px-8 md:block bg-white"
+                >
+                    <!-- Secondary column (hidden on smaller screens) -->
+                </aside>
+            </Transition>
+            <!-- <main class="py-10">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <RouterView></RouterView>
                 </div>
-            </main>
+            </main> -->
         </div>
     </div>
 </template>
@@ -173,7 +196,8 @@ import SideBar from "@/components/primary/SideBar.vue";
 import MobileSideBar from "@/components/primary/MobileSideBar.vue";
 import Cookies from "@/components/primary/Cookies.vue";
 import { useNavigation } from "@/composables/navigationComposable";
-const { navigation, sidebarOpen, userNavigation, teams } = useNavigation();
+const { navigation, sidebarOpen, userNavigation, asideOpen } = useNavigation();
+
 onMounted(() => {
     // if ("serviceWorker" in navigator) {
     //     navigator.serviceWorker.register(
