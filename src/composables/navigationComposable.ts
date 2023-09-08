@@ -28,11 +28,14 @@ const userNavigation = [
 
 const sidebarOpen = ref(false);
 
+const asideOpen = ref(false);
+
 export const useNavigation = () => {
     return {
         navigation,
         teams,
         userNavigation,
-        sidebarOpen
+        sidebarOpen,
+        asideOpen
     };
 };
