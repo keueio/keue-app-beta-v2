@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import {
-    CalendarIcon,
-    ChartPieIcon,
-    Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
-    HomeIcon,
-    UsersIcon,
-    XMarkIcon
-} from "@heroicons/vue/24/outline";
+import { Cog6ToothIcon } from "@heroicons/vue/24/outline";
 import { useNavigation } from "@/composables/navigationComposable";
 const { navigation, teams } = useNavigation();
 </script>
@@ -16,18 +7,14 @@ const { navigation, teams } = useNavigation();
 <template>
     <!-- Static sidebar for desktop -->
     <div
-        class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col"
+        class="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col"
     >
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div
             class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4"
         >
-            <div class="flex h-16 shrink-0 items-center">
-                <img
-                    class="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=primary&shade=600"
-                    alt="Your Company"
-                />
+            <div class="flex h-18 shrink-0 items-center pt-6 pb-4">
+                <img class="h-14 w-auto" src="/logo.png" alt="Keue IO" />
             </div>
             <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
