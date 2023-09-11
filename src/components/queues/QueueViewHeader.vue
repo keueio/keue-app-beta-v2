@@ -3,8 +3,13 @@
         <div class="min-w-0 flex-1">
             <div class="flex items-center gap-x-2">
                 <CheckCircleIcon
+                    v-if="state === 'RUNNING'"
                     class="w-8 h-8 fill-primary-500 -mr-1"
                 ></CheckCircleIcon>
+                <PauseCircleIcon
+                    v-if="state === 'PAUSED'"
+                    class="w-8 h-8 fill-yellow-500 -mr-1"
+                ></PauseCircleIcon>
                 <a
                     :href="`/app/${app}`"
                     class="curser-pointer hover:underline text-xl font-medium leading-7 text-gray-700 sm:truncate sm:text-xl sm:tracking-tight"
@@ -95,8 +100,8 @@
                 <button
                     type="button"
                     @click="pauseKeue"
-                    :disabled="pauseKeueLoading"
-                    class="inline-flex items-center rounded-md bg-yellow-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 disabled:bg-gray-400 disabled:hover:bg-gray-500"
+                    :disabled="pauseKeueLoading || state === 'PAUSED'"
+                    class="inline-flex items-center rounded-md bg-yellow-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 disabled:bg-gray-400 disabled:hover:bg-gray-400"
                     :class="{ 'animate animate-pulse': pauseKeueLoading }"
                 >
                     <PauseCircleIcon
@@ -109,15 +114,16 @@
             <span class="sm:ml-3">
                 <button
                     type="button"
-                    :disabled="pauseKeueLoading"
+                    @click="resumeKeue"
+                    :disabled="resumeKeueLoading || state === 'RUNNING'"
                     class="inline-flex items-center rounded-md bg-lime-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-500 disabled:bg-gray-400 disabled:hover:bg-gray-500"
-                    :class="{ 'animate animate-pulse': pauseKeueLoading }"
+                    :class="{ 'animate animate-pulse': resumeKeueLoading }"
                 >
                     <PlayCircleIcon
                         class="-ml-0.5 mr-1.5 h-5 w-5"
                         aria-hidden="true"
                     />
-                    Run
+                    Resume
                 </button>
             </span>
 
@@ -206,7 +212,7 @@ const keueName = computed(() => {
 
 const {
     result: getKeueResult,
-    refetch,
+    refetch: refetchGetKeueData,
     loading: getKeueLoading
 } = useQuery(
     gql`
@@ -237,7 +243,7 @@ const statuses: any = {
 
 // MUTATIONS
 
-const { mutate: pauseKeue, loading: pauseKeueLoading } = useMutation(
+const { mutate: pauseKeueMutation, loading: pauseKeueLoading } = useMutation(
     gql`
         mutation PauseKeue($pauseKeueInput: CreateKeueInput) {
             pauseKeue(input: $pauseKeueInput) {
@@ -245,12 +251,37 @@ const { mutate: pauseKeue, loading: pauseKeueLoading } = useMutation(
                 state
             }
         }
-    `,
-    {
-        pauseKeueInput: {
-            app: app.value,
-            name: props.keueId
-        }
-    }
+    `
 );
+const pauseKeue = () => {
+    pauseKeueMutation({
+        pauseKeueInput: {
+            name: props.keueId,
+            app: app.value
+        }
+    });
+};
+
+const {
+    mutate: resumeKeueMutation,
+    loading: resumeKeueLoading,
+    onDone: onDoneResumeKeue
+} = useMutation(
+    gql`
+        mutation ResumeKeue($resumeKeueInput: CreateKeueInput) {
+            resumeKeue(input: $resumeKeueInput) {
+                name
+                state
+            }
+        }
+    `
+);
+const resumeKeue = () => {
+    resumeKeueMutation({
+        resumeKeueInput: {
+            name: props.keueId,
+            app: app.value
+        }
+    });
+};
 </script>
