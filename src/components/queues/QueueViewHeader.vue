@@ -1,12 +1,42 @@
 <template>
     <div class="lg:flex lg:items-center lg:justify-between">
         <div class="min-w-0 flex-1">
-            <h2
-                class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
-            >
-                Default Queue
-            </h2>
+            <div class="flex items-center gap-x-2">
+                <CheckCircleIcon
+                    v-if="state === 'RUNNING'"
+                    class="w-8 h-8 fill-primary-500 -mr-1"
+                ></CheckCircleIcon>
+                <PauseCircleIcon
+                    v-if="state === 'PAUSED'"
+                    class="w-8 h-8 fill-yellow-500 -mr-1"
+                ></PauseCircleIcon>
+                <a
+                    :href="`/app/${app}`"
+                    class="curser-pointer hover:underline text-xl font-medium leading-7 text-gray-700 sm:truncate sm:text-xl sm:tracking-tight"
+                >
+                    {{ app }}
+                </a>
+                <p
+                    class="text-2xl font-bold leading-7 text-gray-800 sm:truncate sm:text-2xl sm:tracking-tight"
+                >
+                    /
+                </p>
+                <p
+                    class="text-2xl font-bold leading-7 text-gray-800 sm:truncate sm:text-2xl sm:tracking-tight"
+                >
+                    {{ keueName }}
+                </p>
+                <p
+                    :class="[
+                        statuses[state || 'RUNNING'],
+                        'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-sm font-medium ring-1 ring-inset'
+                    ]"
+                >
+                    {{ state }}
+                </p>
+            </div>
             <div
+                v-if="false"
                 class="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6"
             >
                 <div class="mt-2 flex items-center text-sm text-gray-500">
@@ -53,7 +83,7 @@
                 </button>
             </span>
 
-            <span class="ml-3 hidden sm:block">
+            <span v-if="false" class="ml-3 hidden sm:block">
                 <button
                     type="button"
                     class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -69,13 +99,31 @@
             <span class="sm:ml-3">
                 <button
                     type="button"
-                    class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    @click="pauseKeue"
+                    :disabled="pauseKeueLoading || state === 'PAUSED'"
+                    class="inline-flex items-center rounded-md bg-yellow-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 disabled:bg-gray-400 disabled:hover:bg-gray-400"
+                    :class="{ 'animate animate-pulse': pauseKeueLoading }"
                 >
-                    <CheckIcon
+                    <PauseCircleIcon
                         class="-ml-0.5 mr-1.5 h-5 w-5"
                         aria-hidden="true"
                     />
-                    Publish
+                    Pause
+                </button>
+            </span>
+            <span class="sm:ml-3">
+                <button
+                    type="button"
+                    @click="resumeKeue"
+                    :disabled="resumeKeueLoading || state === 'RUNNING'"
+                    class="inline-flex items-center rounded-md bg-lime-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-500 disabled:bg-gray-400 disabled:hover:bg-gray-500"
+                    :class="{ 'animate animate-pulse': resumeKeueLoading }"
+                >
+                    <PlayCircleIcon
+                        class="-ml-0.5 mr-1.5 h-5 w-5"
+                        aria-hidden="true"
+                    />
+                    Resume
                 </button>
             </span>
 
@@ -129,11 +177,13 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
     BriefcaseIcon,
     CalendarIcon,
-    CheckIcon,
+    CheckCircleIcon,
+    PauseCircleIcon,
+    PlayCircleIcon,
     ChevronDownIcon,
     CurrencyDollarIcon,
     LinkIcon,
@@ -141,4 +191,97 @@ import {
     PencilIcon
 } from "@heroicons/vue/20/solid";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+
+import { useMutation, useQuery } from "@vue/apollo-composable";
+import gql from "graphql-tag";
+import { computed } from "vue";
+const props = defineProps({
+    keueId: {
+        type: String,
+        required: true
+    }
+});
+
+const app = computed(() => {
+    return props.keueId.split("---")[0];
+});
+
+const keueName = computed(() => {
+    return props.keueId.split("---")[1];
+});
+
+const {
+    result: getKeueResult,
+    refetch: refetchGetKeueData,
+    loading: getKeueLoading
+} = useQuery(
+    gql`
+        query getKeue($name: String!) {
+            keue(name: $name) {
+                name
+                state
+            }
+        }
+    `,
+    {
+        name: props.keueId
+    }
+);
+console.log("props.keueId: ", props.keueId);
+console.log("getKeueResult: ", getKeueResult);
+const state = computed(() => {
+    return getKeueResult.value?.keue?.state;
+});
+const capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+const statuses: any = {
+    RUNNING: "text-green-700 bg-green-50 ring-green-600/20",
+    "task-enqueued": "text-gray-600 bg-gray-50 ring-gray-500/10",
+    "task-failed": "text-red-800 bg-red-50 ring-red-600/20"
+};
+
+// MUTATIONS
+
+const { mutate: pauseKeueMutation, loading: pauseKeueLoading } = useMutation(
+    gql`
+        mutation PauseKeue($pauseKeueInput: CreateKeueInput) {
+            pauseKeue(input: $pauseKeueInput) {
+                name
+                state
+            }
+        }
+    `
+);
+const pauseKeue = () => {
+    pauseKeueMutation({
+        pauseKeueInput: {
+            name: props.keueId,
+            app: app.value
+        }
+    });
+};
+
+const {
+    mutate: resumeKeueMutation,
+    loading: resumeKeueLoading,
+    onDone: onDoneResumeKeue
+} = useMutation(
+    gql`
+        mutation ResumeKeue($resumeKeueInput: CreateKeueInput) {
+            resumeKeue(input: $resumeKeueInput) {
+                name
+                state
+            }
+        }
+    `
+);
+const resumeKeue = () => {
+    resumeKeueMutation({
+        resumeKeueInput: {
+            name: props.keueId,
+            app: app.value
+        }
+    });
+};
 </script>

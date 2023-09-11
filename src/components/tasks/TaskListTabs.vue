@@ -66,9 +66,9 @@
 
 <script setup>
 const tabs = [
-    { name: "All", href: "#", count: "52", current: false },
+    { name: "All", href: "#", count: "52", current: true },
     { name: "Enqueued", href: "#", count: "6", current: false },
-    { name: "Retrying", href: "#", count: "4", current: true },
+    { name: "Retrying", href: "#", count: "4", current: false },
     { name: "Completed", href: "#", current: false },
     { name: "Failed", href: "#", current: false }
 ];

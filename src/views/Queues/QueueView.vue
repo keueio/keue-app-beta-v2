@@ -81,9 +81,10 @@ const refetchTasks = () => {
 </script>
 <template>
     <div class="">
-        <QueueViewHeader></QueueViewHeader>
+        <QueueViewHeader :keueId="keueFullId"></QueueViewHeader>
         <TaskListTabs class="mt-12 mb-6"></TaskListTabs>
         <div
+            v-if="false"
             class="rounded-md w-16 px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
         >
             <label for="name" class="block text-xs font-medium text-gray-900"
@@ -98,10 +99,10 @@ const refetchTasks = () => {
                 placeholder="20"
             />
         </div>
-        <span class="text-xs text-gray-500"
+        <span v-if="false" class="text-xs text-gray-500"
             >listKeueTasksLoading: {{ listKeueTasksLoading }}</span
         ><br />
-        <span class="text-xs text-gray-500"
+        <span v-if="false" class="text-xs text-gray-500"
             >getKeueLoading: {{ getKeueLoading }}</span
         >
         <TaskList :tasks="filteredTasks" />
