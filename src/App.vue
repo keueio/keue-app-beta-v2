@@ -28,10 +28,10 @@
 
         <div class="">
             <div
-                class="xl:pl-72 sticky top-0 z-40 xl:mx-auto xl:max-w-7xl xl:px-8"
+                class="xl:pl-72 sticky top-0 z-40 xl:mx-auto xl:maxs-w-7xl xl:px-6"
             >
                 <div
-                    class="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none"
+                    class="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-6 lg:shadow-none"
                 >
                     <button
                         type="button"
@@ -44,11 +44,11 @@
 
                     <!-- Separator -->
                     <div
-                        class="h-6 w-px bg-gray-200 lg:hidden"
+                        class="h-6 w-px bg-gray-200 xl:hidden"
                         aria-hidden="true"
                     />
 
-                    <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+                    <div class="flex flex-1 gap-x-4 self-stretch xl:gap-x-6">
                         <form
                             class="relative flex flex-1"
                             action="#"
