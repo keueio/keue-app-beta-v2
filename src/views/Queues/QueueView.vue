@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useMutation, useQuery } from "@vue/apollo-composable";
-import { apolloClient } from "@/apollo";
 import { useTasksComposable } from "@/composables/tasksComposable";
 import TaskList from "@/components/tasks/TaskList.vue";
 import TaskListTabs from "@/components/tasks/TaskListTabs.vue";
@@ -10,7 +9,6 @@ import QueueViewHeader from "@/components/queues/QueueViewHeader.vue";
 import gql from "graphql-tag";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { orderBy } from "lodash";
-import { PlusIcon } from "@heroicons/vue/20/solid";
 const { selectedTask } = useTasksComposable();
 const route = useRoute();
 const keueId = computed(() => route.params.id || "default");
@@ -18,6 +16,7 @@ const appId = computed(() => route.params.app);
 const keueFullId = computed(
     () => `${route.params.app}---${route.params.id || "default"}`
 );
+const selectedTaskId = computed(() => route.params.task);
 const listKeueTasksFilter = reactive({
     input: {
         queueId: keueFullId,
@@ -74,15 +73,21 @@ const filteredTasks = computed(() => {
     const tasks = listKeueTasks.value?.tasks || [];
     return orderBy(tasks, "createdAt", "desc");
 });
-const refetchTasks = () => {
-    console.log("refetchTasks: ", listKeueTasksFilter);
-    refetchKeueTasks();
-};
 </script>
 <template>
     <div class="">
         <QueueViewHeader :keueId="keueFullId"></QueueViewHeader>
         <TaskListTabs class="mt-12 mb-6"></TaskListTabs>
+        <div class="w-full flex justify-center">
+            <button
+                type="button"
+                @click="refetchKeueTasks"
+                :disabled="listKeueTasksLoading"
+                class="rounded-full bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-300 disabled:hover:bg-gray-300"
+            >
+                Get new tasks
+            </button>
+        </div>
         <div
             v-if="false"
             class="rounded-md w-16 px-3 pb-1.5 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
