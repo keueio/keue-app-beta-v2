@@ -96,37 +96,33 @@
                 </button>
             </span>
 
-            <span class="sm:ml-3">
-                <button
-                    type="button"
+            <span v-if="state && state === 'RUNNING'" class="sm:ml-3">
+                <PrimaryButton
                     @click="pauseKeue"
+                    :loading="pauseKeueLoading"
                     :disabled="pauseKeueLoading || state === 'PAUSED'"
-                    class="inline-flex items-center rounded-md bg-yellow-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 disabled:bg-gray-400 disabled:hover:bg-gray-400"
-                    :class="{ 'animate animate-pulse': pauseKeueLoading }"
+                    class="bg-yellow-500 hover:bg-yellow-600"
                 >
                     <PauseCircleIcon
                         class="-ml-0.5 mr-1.5 h-5 w-5"
                         aria-hidden="true"
                     />
-                    Pause
-                </button>
-            </span>
-            <span class="sm:ml-3">
-                <button
-                    type="button"
-                    @click="resumeKeue"
-                    :disabled="resumeKeueLoading || state === 'RUNNING'"
-                    class="inline-flex items-center rounded-md bg-lime-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-500 disabled:bg-gray-400 disabled:hover:bg-gray-500"
-                    :class="{ 'animate animate-pulse': resumeKeueLoading }"
+                    Pause</PrimaryButton
                 >
-                    <PlayCircleIcon
+            </span>
+
+            <span v-if="state && state === 'PAUSED'" class="sm:ml-3">
+                <PrimaryButton
+                    @click="resumeKeue"
+                    :loading="resumeKeueLoading"
+                    :disabled="resumeKeueLoading || state === 'RUNNING'"
+                    ><PlayCircleIcon
                         class="-ml-0.5 mr-1.5 h-5 w-5"
                         aria-hidden="true"
                     />
-                    Resume
-                </button>
+                    Resume</PrimaryButton
+                >
             </span>
-
             <!-- Dropdown -->
             <Menu as="div" class="relative ml-3 sm:hidden">
                 <MenuButton
@@ -191,7 +187,8 @@ import {
     PencilIcon
 } from "@heroicons/vue/20/solid";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-
+import PrimaryButton from "../primary/PrimaryButton.vue";
+import SpinnerIcon from "../icons/SpinnerIcon.vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { computed } from "vue";
@@ -237,13 +234,16 @@ const capitalize = (str: string) => {
 };
 const statuses: any = {
     RUNNING: "text-green-700 bg-green-50 ring-green-600/20",
-    "task-enqueued": "text-gray-600 bg-gray-50 ring-gray-500/10",
-    "task-failed": "text-red-800 bg-red-50 ring-red-600/20"
+    PAUSED: "text-yellow-800 bg-yellow-50 ring-yellow-600/20"
 };
 
 // MUTATIONS
 
-const { mutate: pauseKeueMutation, loading: pauseKeueLoading } = useMutation(
+const {
+    mutate: pauseKeueMutation,
+    loading: pauseKeueLoading,
+    onDone: onDonePauseKeue
+} = useMutation(
     gql`
         mutation PauseKeue($pauseKeueInput: CreateKeueInput) {
             pauseKeue(input: $pauseKeueInput) {
@@ -261,7 +261,9 @@ const pauseKeue = () => {
         }
     });
 };
-
+onDonePauseKeue(() => {
+    refetchGetKeueData();
+});
 const {
     mutate: resumeKeueMutation,
     loading: resumeKeueLoading,
@@ -276,6 +278,9 @@ const {
         }
     `
 );
+onDoneResumeKeue(() => {
+    refetchGetKeueData();
+});
 const resumeKeue = () => {
     resumeKeueMutation({
         resumeKeueInput: {

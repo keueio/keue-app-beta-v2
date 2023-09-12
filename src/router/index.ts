@@ -58,6 +58,11 @@ const router = createRouter({
             path: "/app/:app/:id",
             name: "queue-view",
             component: () => import("../views/Queues/QueueView.vue")
+        },
+        {
+            path: "/app/:app/:id/task/:task",
+            name: "task-view",
+            component: () => import("../views/Queues/QueueView.vue")
         }
     ]
 });
