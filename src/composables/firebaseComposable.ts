@@ -60,6 +60,7 @@ const signInWithGoogle = async () => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential_1 = GoogleAuthProvider.credentialFromError(error);
+        return error;
     }
 };
 
@@ -83,6 +84,7 @@ const signInWithGithub = async () => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential_1 = GithubAuthProvider.credentialFromError(error);
+        return error;
     }
 };
 

@@ -78,11 +78,23 @@ import EmailLoginForm from "@/components/auth/EmailLoginForm.vue";
 import { useFirebase } from "@/composables/firebaseComposable";
 const { signInWithGoogle, signInWithGithub } = useFirebase();
 const loginWithGoogle = async () => {
-    await signInWithGoogle();
-    window.location.href = "/";
+    await signInWithGoogle()
+        .then((response) => {
+            console.log("response: ", response);
+            window.location.href = "/";
+        })
+        .catch((error) => {
+            console.log("error signing with google: ", error);
+        });
 };
 const loginWithGithub = async () => {
-    await signInWithGithub();
-    window.location.href = "/";
+    await signInWithGithub()
+        .then((response) => {
+            console.log("response: ", response);
+            window.location.href = "/";
+        })
+        .catch((error) => {
+            console.log("error signing with github: ", error);
+        });
 };
 </script>
