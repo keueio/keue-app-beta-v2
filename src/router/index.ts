@@ -22,6 +22,7 @@ const checkAuthState = async () => {
                 resolve();
             } else {
                 // User is signed out
+                currentUser.value = null;
                 console.log("user is logged out");
                 resolve();
             }
@@ -41,6 +42,18 @@ const router = createRouter({
             path: "/auth/login",
             name: "login",
             component: () => import("../views/auth/LoginView.vue")
+        },
+        {
+            path: "/auth/signout",
+            name: "signout",
+            component: () => import("../views/auth/SignOutView.vue")
+        },
+        {
+            path: "/auth/logout",
+            name: "logout",
+            redirect: (to) => {
+                return { path: `/auth/signout` };
+            }
         },
         {
             path: "/start",

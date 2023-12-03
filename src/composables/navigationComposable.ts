@@ -24,7 +24,7 @@ const teams = [
 ];
 const userNavigation = [
     { name: "Your profile", href: "#" },
-    { name: "Sign out", href: "#" }
+    { name: "Sign out", href: "/auth/signout" }
 ];
 
 const sidebarOpen = ref(false);
