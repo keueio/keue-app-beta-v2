@@ -22,6 +22,7 @@
       ```
     -->
     <div>
+        <AlertsBar></AlertsBar>
         <Cookies></Cookies>
         <MobileSideBar></MobileSideBar>
         <SideBar></SideBar>
@@ -65,6 +66,7 @@ import { onMounted, ref } from "vue";
 import SideBar from "@/components/primary/SideBar.vue";
 import MobileSideBar from "@/components/primary/MobileSideBar.vue";
 import TopBar from "@/components/primary/TopBar.vue";
+import AlertsBar from "@/components/primary/AlertsBar.vue";
 import Cookies from "@/components/primary/Cookies.vue";
 import { useNavigation } from "@/composables/navigationComposable";
 const { asideOpen } = useNavigation();
