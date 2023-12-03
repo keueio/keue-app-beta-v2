@@ -45,15 +45,15 @@
     background-color: #f2f2f2;
     background-image: none;
     border: none;
-    -webkit-border-radius: 20px;
-    border-radius: 20px;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     color: #1f1f1f;
     cursor: pointer;
     font-family: "Roboto", arial, sans-serif;
     font-size: 16px;
-    height: 40px;
+    height: 50px;
     letter-spacing: 0.25px;
     outline: none;
     overflow: hidden;
@@ -65,7 +65,7 @@
     transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
     vertical-align: middle;
     white-space: nowrap;
-    width: auto;
+    width: 250px;
     max-width: 400px;
     min-width: min-content;
 }
