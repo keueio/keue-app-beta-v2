@@ -57,6 +57,14 @@
                 </div>
             </div>
 
+            <!-- <p class="mt-10 text-center text-sm text-gray-500">
+                or be old school and use email
+            </p> -->
+
+            <!-- <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <EmailLoginForm></EmailLoginForm>
+            </div> -->
+
             <p class="mt-10 text-center text-sm text-gray-500">
                 Free forever limits.
             </p>
@@ -66,6 +74,7 @@
 <script setup lang="ts">
 import GoogleLoginButton from "@/components/auth/GoogleLoginButton.vue";
 import GithubLoginButton from "@/components/auth/GithubLoginButton.vue";
+import EmailLoginForm from "@/components/auth/EmailLoginForm.vue";
 import { useFirebase } from "@/composables/firebaseComposable";
 const { signInWithGoogle, signInWithGithub } = useFirebase();
 const loginWithGoogle = async () => {

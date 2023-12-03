@@ -1,11 +1,11 @@
 <template>
     <button
         type="button"
-        class="inline-flex items-center min-w-[192px] gap-x-2 rounded-full bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+        class="inline-flex items-center w-[250px] gap-x-2 rounded-full bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
     >
         <svg
-            width="25"
-            height="25"
+            width="30"
+            height="30"
             viewBox="0 0 98 96"
             xmlns="http://www.w3.org/2000/svg"
         >
@@ -16,6 +16,6 @@
                 fill="#fff"
             />
         </svg>
-        Sign in with Github
+        <span class="w-full">Sign in with Github</span>
     </button>
 </template>
