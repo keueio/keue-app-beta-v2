@@ -42,10 +42,15 @@ const getIdTokenPromise = () => {
 const getAppCheckToken = () => {
     return new Promise(async (resolve, reject) => {
         console.log("getAppCheckToken");
-        const db = await idbOpen();
-        const data = await idbGet(db, "compositeKey");
-        const token = "token";
-        resolve(token);
+        try {
+            const db = await idbOpen();
+            const data = await idbGet(db, "compositeKey");
+            const token = "token";
+            resolve(token);
+        } catch (e) {
+            console.log("getAppCheckToken error: ", e.message || e);
+            resolve(null);
+        }
     });
 };
 
@@ -79,8 +84,11 @@ self.addEventListener("fetch", (event: any) => {
             const idToken: any = await getIdTokenPromise();
             const appCheckToken: any = await getAppCheckToken();
             // // Add new header
-            headers.append("X-App-Check-Token", appCheckToken ?? "CustomValue");
-            headers.append("Authorization", idToken);
+            headers.append(
+                "X-App-Check-Token",
+                appCheckToken ?? "appcheckToken"
+            );
+            headers.append("Authorization", idToken ?? "idtoken");
 
             console.log("headers: ", headers.get("Authorization"));
 
@@ -123,21 +131,28 @@ function idbOpen() {
 
 function idbGet(db: any, key: any) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction(
-            "firebase-app-check-store",
-            "readonly"
-        );
-        const store = transaction.objectStore(
-            "1:219374522857:web:1957bd9c8479074b0cbb78-[DEFAULT]"
-        );
-        const request = store.get(key);
-        request.onsuccess = (event: any) => {
-            console.log("get db result: ", event.target.result);
-            resolve(event.target.result);
-        };
-        request.onerror = (event: any) => {
-            console.log("get db error: ", event.target.errorCode);
-            reject(`Error getting from IndexedDB: ${event.target.errorCode}`);
-        };
+        try {
+            const transaction = db.transaction(
+                "firebase-app-check-store",
+                "readonly"
+            );
+            const store = transaction.objectStore(
+                "1:219374522857:web:1957bd9c8479074b0cbb78-[DEFAULT]"
+            );
+            const request = store.get(key);
+            request.onsuccess = (event: any) => {
+                console.log("get db result: ", event.target.result);
+                resolve(event.target.result);
+            };
+            request.onerror = (event: any) => {
+                console.log("get db error: ", event.target.errorCode);
+                reject(
+                    `Error getting from IndexedDB: ${event.target.errorCode}`
+                );
+            };
+        } catch (e: any) {
+            console.log("get db error: ", e.message || e);
+            reject(`Error getting from IndexedDB: ${e.message || e}`);
+        }
     });
 }
